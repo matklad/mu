@@ -83,7 +83,7 @@ maybeSpaces = many (charp isSpace)
 spacesArround :: Parser a -> Parser a
 spacesArround p = maybeSpaces *> p <* maybeSpaces
 
-data Sexp = Number Int
+data Sexp = Number Integer
           | Atom String
           | Cons Sexp Sexp
           deriving Show
@@ -101,7 +101,7 @@ toList (Cons l r) = (l:) <$> toList r
 toList (Atom "nil") = Just []
 toList _ = Nothing
 
-number :: Parser Int
+number :: Parser Integer
 number = read <$> many1 digit
 
 atomStart :: Parser Char
@@ -133,7 +133,7 @@ parseSexp inp = case parse (spacesArround sexp) inp of
   _ -> error "You shall not parse"
 
 
-data Value = NumberV Int
+data Value = NumberV Integer
            | AtomV String
            | ConsV Value Value
            | Closure String Sexp Env
@@ -286,4 +286,6 @@ main :: IO ()
 main = do
   input <- stripComments <$> readFile "./src/eval-eval-factorial.mu"
   -- putStrLn input
-  print $ pprintVal <$> (eval emptyEnv $ parseSexp input)
+  putStrLn $ case (eval emptyEnv $ parseSexp input) of
+    Just value -> pprintVal value
+    Nothing -> "Evaluation error"
