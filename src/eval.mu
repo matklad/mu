@@ -44,13 +44,16 @@
                ((= 'number? (car expr))
                 (number? ((eval env) (cadr expr))))
 
+               ((= 'atom? (car expr))
+                (atom? ((eval env) (cadr expr))))
+
                ;; Macros
 
                ((= 'fix (car expr))
                 ((eval env)
                  (cons
                   '(lambda (f) ((lambda (x) (f (lambda (n) ((x x) n))))
-                           (lambda (x) (f (lambda (n) ((x x) n))))))
+                                (lambda (x) (f (lambda (n) ((x x) n))))))
                   (cons (cadr expr) nil))))
 
                ((= 'cadr (car expr))
@@ -71,8 +74,8 @@
                 (lambda (arg)
                   ((eval
                     (lambda (y) (cond
-                            ((= y (caadr expr)) arg)
-                            (1 (env y)))))
+                                 ((= y (caadr expr)) arg)
+                                 (1 (env y)))))
                    (caddr expr))))
                ;; application
                (1

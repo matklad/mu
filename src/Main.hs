@@ -3,7 +3,6 @@ import Data.Maybe (isJust)
 import Data.Char (isDigit, isLetter, isSpace)
 import Control.Applicative (Alternative, (<|>), empty)
 import Control.Monad (MonadPlus, liftM, ap, mplus, mzero, guard)
-import Debug.Trace (traceShow)
 
 
 newtype Parser a = Parser (String -> [(a, String)])
