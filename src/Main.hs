@@ -274,13 +274,9 @@ evalCond env (x:xs) = do
     then evalCond env xs
     else eval env e
 
-stripComment :: String -> String
-stripComment s = case elemIndex ';' s of
-  Nothing -> s
-  Just i -> take i s
-
 stripComments :: String -> String
-stripComments = unlines . map stripComment . lines
+stripComments = unlines . map (takeWhile (/= ';')) . lines
+
 
 main :: IO ()
 main = do
